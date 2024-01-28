@@ -9,6 +9,7 @@
 #include <cerrno>
 #include <stdexcept>
 #include <thread>
+//#include <mutex>
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -20,6 +21,7 @@ private:
     struct sockaddr_in _server_address = {};
     SSLManager *_ssl_manager;
     SSL* _ssl;
+    //std::mutex _ssl_mutex;
     void receive_messages();
 
 public:

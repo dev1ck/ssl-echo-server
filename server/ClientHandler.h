@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <cstring>
 #include <cerrno>
+// #include <mutex>
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -24,7 +25,8 @@ private:
     IServer* _server;
     SSLManager* _ssl_manager;
     SSL *_ssl;
-
+    // std::mutex _ssl_mutex;
+    
 public:
     ClientHandler(int socket, struct sockaddr_in address, IServer* server, SSLManager* ssl_manager);
     void handle();

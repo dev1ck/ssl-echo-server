@@ -15,8 +15,11 @@ void ClientHandler::handle()
     while(1)
     {
         char buffer[4096];
-        int bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
-
+        int bytes_received = 0;
+        {
+            // std::lock_guard<std::mutex> lock(_ssl_mutex);
+            bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
+        }
         if (bytes_received <= 0)
         {
             break;
@@ -27,13 +30,14 @@ void ClientHandler::handle()
         inet_ntop(AF_INET, &(_client_address.sin_addr), ip_str, INET_ADDRSTRLEN);
         std::string message = "[" + std::string(ip_str) + "] " + buffer;
 
-        _server->broadcast_message(message);
+        _server->broadcast_message(message);        
     }
     stop();
 }
 
 void ClientHandler::send_message(const std::string& message)
 {
+    // std::lock_guard<std::mutex> lock(_ssl_mutex);
     if (SSL_write(_ssl, message.c_str(), message.size()) <= 0)
     {
         throw std::runtime_error("[send]: " + std::string(strerror(errno)));

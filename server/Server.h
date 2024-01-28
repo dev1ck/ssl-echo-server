@@ -22,7 +22,7 @@ class Server: public IServer
 private:
     int _server_socket;
     struct sockaddr_in _server_address = {};
-    std::map<int, ClientHandler> _clients;
+    std::map<int, std::unique_ptr<ClientHandler>> _clients;
     SSLManager* _ssl_manager;
     void accept_clients();
     

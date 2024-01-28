@@ -41,7 +41,7 @@ void Server::accept_clients()
             throw std::runtime_error("[accept]: " + std::string(strerror(errno)));
         }
 
-        _clients.insert(std::make_pair(client_socket, ClientHandler(client_socket, client_address, this, _ssl_manager)));
+        _clients[client_socket] = std::make_unique<ClientHandler>(client_socket, client_address, this, _ssl_manager);
     }
 }
 
@@ -49,7 +49,7 @@ void Server::broadcast_message(const std::string& message)
 {
     for (auto& client: _clients)
     {
-        client.second.send_message(message);
+        client.second->send_message(message);
     }    
 }
 
@@ -63,7 +63,7 @@ Server::~Server()
 {
     for (auto& client: _clients)
     {
-        client.second.stop();
+        client.second->stop();
     }
     close(_server_socket);
 }
