@@ -17,7 +17,6 @@ void ClientHandler::handle()
         char buffer[4096];
         int bytes_received = 0;
         {
-            // std::lock_guard<std::mutex> lock(_ssl_mutex);
             bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
         }
         if (bytes_received <= 0)
@@ -35,7 +34,6 @@ void ClientHandler::handle()
 
 void ClientHandler::send_message(const std::string& message)
 {
-    // std::lock_guard<std::mutex> lock(_ssl_mutex);
     if (SSL_write(_ssl, message.c_str(), message.size()) <= 0)
     {
         throw std::runtime_error("[send]: " + std::string(strerror(errno)));
