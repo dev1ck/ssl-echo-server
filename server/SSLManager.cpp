@@ -6,7 +6,7 @@ SSLManager::SSLManager()
     OpenSSL_add_ssl_algorithms();
 
     _ssl_context = SSL_CTX_new(SSLv23_server_method());
-    if (!_ssl_context)
+    if (not _ssl_context)
     {
         throw std::runtime_error("Unable to create SSL context");
     }
@@ -24,7 +24,7 @@ void SSLManager::load_certificates(const std::string &cert_file, const std::stri
         throw std::runtime_error("Failed to load private key");
     }
 
-    if (!SSL_CTX_check_private_key(_ssl_context))
+    if (not SSL_CTX_check_private_key(_ssl_context))
     {
         throw std::runtime_error("Private key does not match the certificate public key");
     }
