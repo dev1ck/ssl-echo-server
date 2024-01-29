@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-#define kCertFile "./cert.pem"
+#define kCertFile "../ssl/cert.pem"
 
 int main(int argc, char *argv[])
 {

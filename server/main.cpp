@@ -4,8 +4,8 @@
 
 #define kPort 8080
 #define kBacklogQueueSize 5
-#define kCertFile "./certificate/cert.pem"
-#define kKeyFile "./certificate/key.pem"
+#define kCertFile "../ssl/cert.pem"
+#define kKeyFile "../ssl/key.pem"
 
 int main()
 {
