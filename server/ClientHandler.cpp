@@ -26,13 +26,11 @@ void ClientHandler::handle()
         }
         buffer[bytes_received] = '\0';
 
-        char ip_str[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &(_client_address.sin_addr), ip_str, INET_ADDRSTRLEN);
-        std::string message = "[" + std::string(ip_str) + "] " + buffer;
+        std::string message = "[" + get_ip_str() + "] " + buffer;
 
         _server->broadcast_message(message);        
     }
-    stop();
+    _server->disconnect(_client_socket);
 }
 
 void ClientHandler::send_message(const std::string& message)
@@ -44,9 +42,15 @@ void ClientHandler::send_message(const std::string& message)
     }
 }
 
-void ClientHandler::stop()
+std::string ClientHandler::get_ip_str()
+{
+    char ip_str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(_client_address.sin_addr), ip_str, INET_ADDRSTRLEN);
+    return std::string(ip_str);
+}
+
+ClientHandler::~ClientHandler()
 {
     _ssl_manager->shutdown_ssl(_ssl);
-    _server->disconnect(_client_socket);
     close(_client_socket);
 }

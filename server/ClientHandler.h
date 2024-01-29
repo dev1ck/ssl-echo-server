@@ -29,9 +29,10 @@ private:
     
 public:
     ClientHandler(int socket, struct sockaddr_in address, IServer* server, SSLManager* ssl_manager);
+    ~ClientHandler();
     void handle();
     void send_message(const std::string& message);
-    void stop();
+    std::string get_ip_str();
 };
 
 #endif

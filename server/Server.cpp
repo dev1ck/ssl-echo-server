@@ -42,6 +42,7 @@ void Server::accept_clients()
         }
 
         _clients[client_socket] = std::make_unique<ClientHandler>(client_socket, client_address, this, _ssl_manager);
+        std::cout << "Client Connected: [IP: " << _clients[client_socket]->get_ip_str() << "]" << std::endl;
     }
 }
 
@@ -55,15 +56,12 @@ void Server::broadcast_message(const std::string& message)
 
 void Server::disconnect(int client_socket)
 {
+    std::cout << "Client Disconnect: [IP: " << _clients[client_socket]->get_ip_str() << "]" << std::endl;
     _clients.erase(client_socket);
 }
 
 
 Server::~Server()
 {
-    for (auto& client: _clients)
-    {
-        client.second->stop();
-    }
     close(_server_socket);
 }

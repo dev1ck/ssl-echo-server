@@ -3,6 +3,7 @@
 #include "SSLManager.h"
 
 #define kPort 8080
+#define kBacklogQueueSize 5
 #define kCertFile "./certificate/cert.pem"
 #define kKeyFile "./certificate/key.pem"
 
@@ -14,7 +15,7 @@ int main()
         ssl_manager.load_certificates(kCertFile, kKeyFile);
 
         Server server(kPort, &ssl_manager);
-        server.start(10);
+        server.start(kBacklogQueueSize);
     }
     catch(const std::exception& e)
     {

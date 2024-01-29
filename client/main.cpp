@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     std::string str_ip = argv[1];
     std::istringstream iss(argv[2]);
     int port;
-    if (!(iss >> port)) {
+    if (not (iss >> port)) {
         std::cerr << "Usage: " << argv[0] << " [ip] [port]" << std::endl;
         return -1;
     }

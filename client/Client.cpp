@@ -29,12 +29,6 @@ void Client::connect_server()
     std::cout << "Connection completed!!" << std::endl;
 }
 
-void::Client::disconnect()
-{
-    _ssl_manager->shutdown_ssl(_ssl);
-    close(_socket);
-}
-
 void::Client::send_message(const std::string& message)
 {
     //std::lock_guard<std::mutex> lock(_ssl_mutex);
@@ -50,24 +44,23 @@ void Client::run()
     std::thread receive_thread(&Client::receive_messages, this);
     receive_thread.detach();
 
-    while(1)
+    std::cout << "Send: ";
+    for(;;)
     {
         std::string message;
         std::getline(std::cin, message);
         if (message == "exit")
         {
-            disconnect();
             break;
         }
 
         send_message(message);
     }
-
 }
 
 void Client::receive_messages()
 {
-    while(1)
+    for(;;)
     {
         char buffer[4096];
         int bytes_received = 0;
@@ -78,12 +71,18 @@ void Client::receive_messages()
 
         if (bytes_received <= 0)
         {
-            disconnect();
             break;
         }
 
         buffer[bytes_received] = '\0';
-        std::cout << buffer << std::endl;
+        std::cout << std::endl << "Recv: " << buffer << std::endl;
+        std::cout << "Send: " ;
         std::flush(std::cout);
     }
+}
+
+Client::~Client()
+{
+    _ssl_manager->shutdown_ssl(_ssl);
+    close(_socket);
 }

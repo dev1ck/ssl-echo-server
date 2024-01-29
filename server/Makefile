@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -g
+# CXXFLAGS = -Wall -g
 TARGET = server
 SRCS = main.cpp ClientHandler.cpp Server.cpp SSLManager.cpp
 OBJS = $(SRCS:.cpp=.o)
