@@ -15,10 +15,7 @@ void ClientHandler::handle()
     for(;;)
     {
         char buffer[4096];
-        int bytes_received = 0;
-        {
-            bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
-        }
+        int bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
         if (bytes_received <= 0)
         {
             break;

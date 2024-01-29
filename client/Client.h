@@ -17,6 +17,7 @@
 class Client {
 private:
     int _socket;
+    std::thread _receive_thread;
     struct sockaddr_in _server_address = {};
     SSLManager *_ssl_manager;
     SSL* _ssl;

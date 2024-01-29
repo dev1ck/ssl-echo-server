@@ -26,7 +26,7 @@ void Client::connect_server()
     }
 
     _ssl_manager->perform_handshake(_ssl);
-    std::cout << "Connection completed!!" << std::endl;
+    std::cout << "Connection completed!!" << "\n\n";
 }
 
 void::Client::send_message(const std::string& message)
@@ -40,8 +40,7 @@ void::Client::send_message(const std::string& message)
 void Client::run()
 {
     connect_server();
-    std::thread receive_thread(&Client::receive_messages, this);
-    receive_thread.detach();
+    _receive_thread= std::thread(&Client::receive_messages, this);
 
     std::cout << "Send: ";
     for(;;)
@@ -62,18 +61,14 @@ void Client::receive_messages()
     for(;;)
     {
         char buffer[4096];
-        int bytes_received = 0;
-        {
-            bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
-        }
-
+        int bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
         if (bytes_received <= 0)
         {
             break;
         }
 
         buffer[bytes_received] = '\0';
-        std::cout << std::endl << "Recv: " << buffer << std::endl;
+        std::cout << '\n' << "Recv: " << buffer << '\n';
         std::cout << "Send: " ;
         std::flush(std::cout);
     }
@@ -82,5 +77,6 @@ void Client::receive_messages()
 Client::~Client()
 {
     _ssl_manager->shutdown_ssl(_ssl);
+    _receive_thread.join();
     close(_socket);
 }
