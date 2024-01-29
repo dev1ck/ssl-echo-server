@@ -30,7 +30,7 @@ void Server::start(int queue_size)
 
 void Server::accept_clients()
 {
-    while(1)
+    for(;;)
     {
         struct sockaddr_in client_address = {};
         socklen_t socket_size;
