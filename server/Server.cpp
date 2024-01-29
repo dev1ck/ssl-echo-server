@@ -26,7 +26,6 @@ void Server::start(int queue_size)
     }
     std::cout << "Listening on port " << ntohs(_server_address.sin_port) << "\n\n";
     _accept_thread = std::thread(&Server::accept_clients, this);
-    //accept_clients();
 
     for(;;)
     {
