@@ -85,6 +85,6 @@ Server::~Server()
 {
     shutdown(_server_socket, SHUT_RD);
     _accept_thread.join();
-    broadcast_message("[Server] Server is Closing");
+    broadcast_message("[Server] The server is closed.");
     close(_server_socket);
 }
