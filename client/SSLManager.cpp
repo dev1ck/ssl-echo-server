@@ -6,7 +6,7 @@ SSLManager::SSLManager()
     OpenSSL_add_ssl_algorithms();
 
     _ssl_context = SSL_CTX_new(SSLv23_client_method());
-    if (!_ssl_context)
+    if (not _ssl_context)
     {
         throw std::runtime_error("Unable to create SSL context");
     }
