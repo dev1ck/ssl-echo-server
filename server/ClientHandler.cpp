@@ -12,7 +12,7 @@ _client_socket(socket), _client_address(address), _server(server), _ssl_manager(
 
 void ClientHandler::handle()
 {
-    while(1)
+    for(;;)
     {
         char buffer[4096];
         int bytes_received = 0;
