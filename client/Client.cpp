@@ -49,9 +49,8 @@ void Client::run()
         std::getline(std::cin, message);
         if (message == "exit")
         {
-            break;
+            return;
         }
-
         send_message(message);
     }
 }
@@ -64,9 +63,8 @@ void Client::receive_messages()
         int bytes_received = SSL_read(_ssl, buffer, sizeof(buffer) - 1);
         if (bytes_received <= 0)
         {
-            break;
+           return;
         }
-
         buffer[bytes_received] = '\0';
         std::cout << '\n' << "Recv: " << buffer << '\n';
         std::cout << "Send: " ;
@@ -76,7 +74,8 @@ void Client::receive_messages()
 
 Client::~Client()
 {
-    _ssl_manager->shutdown_ssl(_ssl);
+    shutdown(_socket, SHUT_RD);
     _receive_thread.join();
+    _ssl_manager->shutdown_ssl(_ssl);
     close(_socket);
 }

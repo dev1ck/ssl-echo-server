@@ -27,7 +27,6 @@ public:
     Client(const std::string& ip, int port, SSLManager* ssl_manager);
     ~Client();
     void connect_server();
-    // void disconnect();
     void send_message(const std::string& message);
     void run();
 };
