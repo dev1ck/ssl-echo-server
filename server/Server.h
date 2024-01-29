@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <stdexcept>
+#include <thread>
 #include <cerrno>
 #include <map>
 
@@ -22,6 +23,7 @@ class Server: public IServer
 private:
     int _server_socket;
     struct sockaddr_in _server_address = {};
+    std::thread _accept_thread;
     std::map<int, std::unique_ptr<ClientHandler>> _clients;
     SSLManager* _ssl_manager;
     void accept_clients();
