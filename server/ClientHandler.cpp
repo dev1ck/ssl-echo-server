@@ -8,6 +8,7 @@ _client_socket(socket), _client_address(address), _server(server), _ssl_manager(
 
     _client_thread = std::thread(&ClientHandler::handle, this);
     _client_thread.detach();
+    //공유자원 활용, 핸들부분이 서버쪽 cpp로, 아큐먼트로 클라이언트 목록 공유
 }
 
 void ClientHandler::handle()
@@ -22,9 +23,17 @@ void ClientHandler::handle()
         }
         buffer[bytes_received] = '\0';
 
-        std::string message = "[" + get_ip_str() + "] " + buffer;
-
-        _server->broadcast_message(message);        
+        std::string message = buffer;
+        std::string brodcast_filter = "broadcast ";
+        if (message.find(brodcast_filter) == 0)
+        {
+            message = "[" + get_ip_str() + "] " + message.substr(brodcast_filter.size());
+            _server->broadcast_message(message);
+        }
+        else
+        {
+            send_message(message);
+        }
     }
     _server->disconnect(_client_socket);
 }

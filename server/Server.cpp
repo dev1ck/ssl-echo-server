@@ -37,7 +37,7 @@ void Server::start(int queue_size)
             return;
         }
         input = "[Server] " + input;
-        broadcast_message(input);
+        broadcast_message(input);  
     }
 }
 
